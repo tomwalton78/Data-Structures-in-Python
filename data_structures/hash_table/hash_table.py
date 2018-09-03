@@ -14,6 +14,8 @@ class HashEntry():
 
 
 class HashTable():
+    """Class to represent a hash table object
+    """
 
     def __init__(self, num_elements):
         """Initialise Hash Table by creating array of length num_elements, with
@@ -73,12 +75,14 @@ class HashTable():
 
         # Iterate through linked list until key is found, or end is reached
         while current_node.next_node is not None:
+
+            # Go to next node
+            current_node = current_node.next_node
+
             # Check if current node corresponds to input key
             if current_node.data.key == key:
                 return current_node.data.value
 
-            # Go to next node
-            current_node = current_node.next_node
 
         # Raise KeyError if key not found in linked list
         raise KeyError('Key not found in hash table.')
@@ -99,15 +103,26 @@ class HashTable():
     def print_all(self):
         """Print entire contents of hash table
         """
-        pass
+        print(
+            """\nContents of hash table, with blank lines separating distinct
+            linked lists:""".replace('  ', ''))
+        for linked_list in self.main_array:
+            linked_list.print_all()
+            print('')
 
 
 if __name__ == '__main__':
 
-    h = HashTable(100)
+    h = HashTable(10)
 
+    h.insert(-88, 'minus eighty-eight')
+    h.insert(0, 'zero')
     h.insert(7, 'seven')
     h.insert(8, 'eight')
+    h.insert(10, 'ten')
+    h.insert(490, 'four hundred and ninety')
     h.insert(99, 'ninety-nine')
     print(h.retrieve(7))
     print(h.retrieve(99))
+
+    h.print_all()
