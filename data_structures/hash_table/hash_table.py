@@ -12,6 +12,12 @@ class HashEntry():
         self.key = key
         self.value = value
 
+    def __str__(self):
+        print_string = 'key: {}   |   value: {}'.format(
+            str(self.key), str(self.value)
+        )
+        return print_string
+
 
 class HashTable():
     """Class to represent a hash table object
@@ -83,7 +89,6 @@ class HashTable():
             if current_node.data.key == key:
                 return current_node.data.value
 
-
         # Raise KeyError if key not found in linked list
         raise KeyError('Key not found in hash table.')
 
@@ -108,34 +113,8 @@ class HashTable():
             linked lists:""".replace('  ', ''))
 
         for linked_list in self.main_array:
-
-            # Handle special case of empty linked list
-            if linked_list.head is None:
-                print('LinkedList is empty')
-            else:
-                # Start at head node
-                current_node = linked_list.head
-
-                # Print value of head node
-                print(
-                    'key:', current_node.data.key, ' | ',
-                    'value:', current_node.data.value
-                )
-
-                # Iterate through linked list until end, printing value each time
-                while current_node.next_node is not None:
-
-                    # Go to next node
-                    current_node = current_node.next_node
-
-                    # Print its value
-                    print(
-                        'key:', current_node.data.key, ' | ',
-                        'value:', current_node.data.value
-                    )
-
+            linked_list.print_all()
             print('')
-
 
 
 if __name__ == '__main__':
