@@ -106,9 +106,36 @@ class HashTable():
         print(
             """\nContents of hash table, with blank lines separating distinct
             linked lists:""".replace('  ', ''))
+
         for linked_list in self.main_array:
-            linked_list.print_all()
+
+            # Handle special case of empty linked list
+            if linked_list.head is None:
+                print('LinkedList is empty')
+            else:
+                # Start at head node
+                current_node = linked_list.head
+
+                # Print value of head node
+                print(
+                    'key:', current_node.data.key, ' | ',
+                    'value:', current_node.data.value
+                )
+
+                # Iterate through linked list until end, printing value each time
+                while current_node.next_node is not None:
+
+                    # Go to next node
+                    current_node = current_node.next_node
+
+                    # Print its value
+                    print(
+                        'key:', current_node.data.key, ' | ',
+                        'value:', current_node.data.value
+                    )
+
             print('')
+
 
 
 if __name__ == '__main__':
