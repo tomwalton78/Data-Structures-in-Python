@@ -7,12 +7,25 @@ class HashEntry():
 
     def __init__(self, key, value):
         """Store key and value
-        """
 
+        Parameters
+        ----------
+        key
+            Key in key value store. Can be any non-mutable data type
+        value
+            Can be any python object
+        """
         self.key = key
         self.value = value
 
     def __str__(self):
+        """Overload __str__ so something sensible is printed
+
+        Returns
+        -------
+        print_string : str
+            Key and value of object, in nicely formatted string
+        """
         print_string = 'key: {}   |   value: {}'.format(
             str(self.key), str(self.value)
         )
@@ -24,11 +37,17 @@ class HashTable():
     """
 
     def __init__(self, num_elements):
+
         """Initialise Hash Table by creating array of length num_elements, with
         each element being a linked list
+
+        Parameters
+        ----------
+        num_elements : int
+            Size of array that stores linked lists
         """
 
-        # Creat array of linked lists
+        # Create array of linked lists
         self.main_array = [LinkedList() for i in range(num_elements)]
         self.num_elements = num_elements
 
@@ -41,6 +60,16 @@ class HashTable():
         python's hash() function will hash to a different result each time the
         python process is run, since it salts the input with a random string.
         Results will be consistent within the same python process.
+
+        Parameters
+        ----------
+        key
+            Key in key value store. Can be any non-mutable data type
+
+        Returns
+        -------
+        int
+            Hashed key, representing an index in self.main_array
         """
 
         # Hash key with Python's built-in hash function (returns and integer)
@@ -52,6 +81,13 @@ class HashTable():
 
     def insert(self, key, value):
         """Insert key, value pair into hash table
+
+        Parameters
+        ----------
+        key
+            Key in key value store. Can be any non-mutable data type
+        value
+            Can be any python object
         """
 
         # Map key to an index in main_array
@@ -66,6 +102,19 @@ class HashTable():
     def _linked_list_lookup(self, linked_list, key):
         """Returns value corresponds to input key in a linked list, raising a
         KeyError if key not found
+
+        Parameters
+        ----------
+        linked_list : LinkedList
+            LinkedList object in which to perform lookup
+        key
+            Key in key value store (un-hashed). Can be any non-mutable data
+            type
+
+        Returns
+        -------
+        current_node.data.value
+            Value corresponding to input key. Can be any python object.
         """
 
         # Handle special case of empty linked list
@@ -94,6 +143,16 @@ class HashTable():
 
     def retrieve(self, key):
         """Retrieve a value from the hash table based on its key
+
+        Parameters
+        ----------
+        key
+            Key in key value store (un-hashed). Can be any non-mutable data
+            type
+
+        Returns
+        -------
+        Value corresponding to input key. Can be any python object.
         """
 
         # Map key to an index in main_array

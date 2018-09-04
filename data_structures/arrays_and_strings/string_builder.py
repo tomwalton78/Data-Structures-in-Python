@@ -28,7 +28,6 @@ class StringBuilder():
         str
             Joined list of strings
         """
-
         return ''.join(self.string_list)
 
     def extend(self, list_of_strings):
