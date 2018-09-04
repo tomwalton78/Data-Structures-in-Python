@@ -3,6 +3,13 @@ class Node():
     def __init__(self, data, next_node=None):
         """Initialise Node object with a value (data) and a reference to the
         next node in the linked list
+
+        Parameters
+        ----------
+        data
+            Data to store in node. Can be any python object.
+        next_node : Node, optional
+            Reference to next Node object in LinkedList
         """
         self.data = data
         self.next_node = next_node
@@ -11,12 +18,20 @@ class Node():
 class LinkedList():
 
     def __init__(self):
+        """Initialise LinkedList containing no data
+        """
 
         self.head = None
 
     def append(self, data):
         """Append an element to the end of the linked list
+
+        Parameters
+        ----------
+        data
+            Data to store in LinkedList. Can be any python object.
         """
+
         # If head is None (i.e. empty linked list), put the data there (as
         # first element)
         if self.head is None:
@@ -36,6 +51,11 @@ class LinkedList():
 
     def prepend(self, data):
         """Add data to beginning of linked list
+
+        Parameters
+        ----------
+        data
+            Data to store in LinkedList. Can be any python object.
         """
 
         # Create new Node to represent to contain this data, with a reference
@@ -47,6 +67,11 @@ class LinkedList():
 
     def delete_first_node_with_value(self, data):
         """Delete the first occurrence of a node with the specified value
+
+        Parameters
+        ----------
+        data
+            Value to delete in LinkedList. Can be any python object.
         """
 
         # Handle special case of empty linked list
