@@ -67,7 +67,7 @@ class HashTable():
         """Returns value corresponds to input key in a linked list, raising a
         KeyError if key not found
         """
-        # print(linked_list)
+
         # Handle special case of empty linked list
         if linked_list.head is None:
             raise KeyError('Key not found in hash table.')
