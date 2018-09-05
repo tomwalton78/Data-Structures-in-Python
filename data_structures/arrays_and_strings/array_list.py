@@ -29,7 +29,7 @@ class ArrayList():
 
         self.resizing_factor = resizing_factor
 
-    def _expand_list(self):
+    def _expand_main_list(self):
         """Expand list by resizing_factor
 
         E.g. For resizing_factor of 2, a list of length 10 will become a list
@@ -41,21 +41,84 @@ class ArrayList():
         change_in_length = new_length - len(self.main_list)
 
         # Entend underlying list
-        self.main_list = self.main_list.extend([None] * change_in_length)
+        self.main_list.extend([None] * change_in_length)
 
-    def append(self):
-        pass
+    def append(self, data):
+        """Add single data element to main_list, increasing its size if
+        necessary.
+        Operates inplace.
 
-    def extend(self):
-        pass
+        Parameters
+        ----------
+        data : any
+            Item to append to main_list
+        """
+        # Check to see if main_list is full
+        if self.num_elements == len(self.main_list):
+            # Increase size of main_list
+            self._expand_main_list()
+
+        # Add element to mains_list
+        self.main_list[self.num_elements] = data
+
+        # Increment num elements counter
+        self.num_elements += 1
+
+    def extend(self, extension):
+        """Append extension values to main_list. Wraps this object's append
+        method.
+        Parameters
+        ----------
+        extension : list
+            List of Python objects to append to main_list
+        """
+        for element in extension:
+            self.append(element)
 
     def to_list(self):
         """Returns object contents, in form of standard Python list.
+
+        Returns
+        -------
+        list
+            Values in main_list, converted to a standard Python list object
         """
-        pass
+        return self.main_list[:self.num_elements]
 
     def __str__(self):
-        pass
+        """Overload __str__ to print a more useful output: the values in
+        main_list. Wraps this object's to_list method.
+
+        Returns
+        -------
+        str
+            Values in main_list, converted to a standard Python list object,
+            then whole list converted to a str
+        """
+        return str(self.to_list())
 
     def __iter__(self):
-        pass
+        """Overload __iter__ to allow object to become iterable; allows
+        iterating over values in main_list.
+
+        Returns
+        -------
+        list_iterator
+            Iterator object over values in main_list
+        """
+        return iter(self.to_list())
+
+
+if __name__ == '__main__':
+
+    a = ArrayList()
+
+    a.append(3)
+    a.extend([4, 5, 6, 7])
+    a.append(8)
+
+    print(a.to_list())
+    print(a)
+
+    for item in a:
+        print(item)
