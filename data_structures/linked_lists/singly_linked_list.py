@@ -98,20 +98,27 @@ class LinkedList():
             # Go to next node
             current_node = current_node.next_node
 
-    def print_all(self):
-        """Print all values in linked list, from head to tail
+    def __str__(self):
+        """Overload __str__ operator to print all values in LinkedList.
+
+        Returns
+        -------
+        str
+            Heading line, then comma separated list of LinkedList contents
         """
+
+        # List to store LinkedList contents
+        contents = []
 
         # Handle special case of empty linked list
         if self.head is None:
-            print('LinkedList is empty')
-            return
+            return 'LinkedList is empty'
 
         # Start at head node
         current_node = self.head
 
-        # Print value of head node
-        print(current_node.data)
+        # Store value of head node
+        contents.append(current_node.data)
 
         # Iterate through linked list until end, printing value each time
         while current_node.next_node is not None:
@@ -119,8 +126,16 @@ class LinkedList():
             # Go to next node
             current_node = current_node.next_node
 
-            # Print its value
-            print(current_node.data)
+            # Store node value
+            contents.append(current_node.data)
+
+        # Convert to str
+        contents = [str(i) for i in contents]
+        contents = ', '.join(contents)
+
+        heading = 'LinkedList contents: head -> tail\n'
+
+        return ''.join([heading, contents])
 
 
 if __name__ == '__main__':
@@ -128,22 +143,22 @@ if __name__ == '__main__':
     # Initialise linked list
     L = LinkedList()
     print('Initial LinkedList:')
-    L.print_all()
+    print(L)
 
     # Append elements
     L.append(1)
     L.append(2)
     L.append(3)
     print('\nElements appended:')
-    L.print_all()
+    print(L)
 
     # Prepend elements
     L.prepend(0)
     L.prepend(-1)
     print('\nElements prepended')
-    L.print_all()
+    print(L)
 
     # Delete first node with value of 2
     L.delete_first_node_with_value(2)
     print('\nLinkedList with 2 deleted:')
-    L.print_all()
+    print(L)
