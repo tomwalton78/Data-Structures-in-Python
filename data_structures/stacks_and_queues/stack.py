@@ -21,7 +21,7 @@ class Stack(LinkedList):
             Data at head of LinkedList
         """
         if self.is_empty():
-            raise Exception('Stack is empty.')
+            raise Exception('{} is empty.'.format(self.__name__))
 
         # Retrieve head node data, then delete head node
         data = self.head.data
@@ -48,7 +48,7 @@ class Stack(LinkedList):
         """
 
         if self.is_empty():
-            raise Exception('Stack is empty.')
+            raise Exception('{} is empty.'.format(self.__name__))
 
         return self.head.data
 
