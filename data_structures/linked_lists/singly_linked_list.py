@@ -20,7 +20,6 @@ class LinkedList():
     def __init__(self):
         """Initialise LinkedList containing no data
         """
-
         self.head = None
 
     def append(self, data):
