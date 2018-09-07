@@ -48,7 +48,7 @@ class BinarySearchTree():
                 current_node.left_node = Node(data)
             # If not at end of tree, recursively walk through branches
             else:
-                _recursive_insert(current_node.left_node, data)
+                self._recursive_insert(current_node.left_node, data)
 
         # Go to right node
         elif data > current_node.data:
@@ -57,11 +57,11 @@ class BinarySearchTree():
                 current_node.right_node = Node(data)
             # If not at end of tree, recursively walk through branches
             else:
-                _recursive_insert(current_node.right_node, data)
+                self._recursive_insert(current_node.right_node, data)
 
         # Handle duplicate values
         elif data == current_node.data:
-            raise Exception('Cannot insert duplicate values into tree.)
+            raise Exception('Cannot insert duplicate values into tree.')
 
     def insert(self, data):
         """Insert element into tree, keeping order.
@@ -78,7 +78,7 @@ class BinarySearchTree():
             return
 
         # Recursively insert data, starting at root node
-        _recursive_insert(self.root, data)
+        self._recursive_insert(self.root, data)
 
     def _recursive_find(self, current_node, value):
         """Try to find value at either left or right node, otherwise
@@ -97,7 +97,7 @@ class BinarySearchTree():
                 return False
             # If not at end of tree, recursively walk through branches
             else:
-                return _recursive_find(current_node.left_node, value)
+                return self._recursive_find(current_node.left_node, value)
 
         # Go to right node
         elif value > current_node.data:
@@ -106,7 +106,7 @@ class BinarySearchTree():
                 return False
             # If not at end of tree, recursively walk through branches
             else:
-                return _recursive_find(current_node.right_node, value)
+                return self._recursive_find(current_node.right_node, value)
 
         # Check current node for value
         elif value == current_node.data:
@@ -131,4 +131,148 @@ class BinarySearchTree():
             return True
 
         # Recursively look for value, starting at root node
-        return _recursive_find(self.root, value)
+        return self._recursive_find(self.root, value)
+
+    def _display(self, node):
+        """Print the data value of the input node
+
+        Parameters
+        ----------
+        node : Node
+            Node to display
+        """
+        print(node.data)
+
+    def _recursive_in_order_traversal(
+            self, current_node, node_func=_display
+            ):
+        """Recursively visit nodes, usng in order binary tree traversal.
+        Parameters
+        ----------
+        current_node : Node
+            Last node visited
+        node_func : func
+            Function to apply to each node
+        """
+
+        # Visit left node
+        if current_node.left_node is not None:
+            self._recursive_in_order_traversal(
+                current_node.left_node, node_func=node_func
+            )
+
+        # Visit centre node
+        node_func(current_node)
+
+        # Visit right node
+        if current_node.right_node is not None:
+            self._recursive_in_order_traversal(
+                current_node.right_node, node_func=node_func
+            )
+
+    def _recursive_pre_order_traversal(
+            self, current_node, node_func=_display
+            ):
+        """Recursively visit nodes, usng pre-order binary tree traversal.
+        Parameters
+        ----------
+        current_node : Node
+            Last node visited
+        node_func : func
+            Function to apply to each node
+        """
+
+        # Visit centre node
+        node_func(current_node)
+
+        # Visit left node
+        if current_node.left_node is not None:
+            self._recursive_in_order_traversal(
+                current_node.left_node, node_func=node_func
+            )
+
+        # Visit right node
+        if current_node.right_node is not None:
+            self._recursive_in_order_traversal(
+                current_node.right_node, node_func=node_func
+            )
+
+    def _recursive_post_order_traversal(
+            self, current_node, node_func=_display
+            ):
+        """Recursively visit nodes, usng post-order binary tree traversal.
+        Parameters
+        ----------
+        current_node : Node
+            Last node visited
+        node_func : func
+            Function to apply to each node
+        """
+
+        # Visit left node
+        if current_node.left_node is not None:
+            self._recursive_in_order_traversal(
+                current_node.left_node, node_func=node_func
+            )
+
+        # Visit right node
+        if current_node.right_node is not None:
+            self._recursive_in_order_traversal(
+                current_node.right_node, node_func=node_func
+            )
+
+        # Visit centre node
+        node_func(current_node)
+
+    def traverse(self, method='in-order', node_func=_display):
+        """Traverse binary tree using specified recursive traversal function,
+        applying node_func to each node that is touched.
+
+        Parameters
+        ----------
+        method : str
+            Type of traversal to use. Possible values:
+                "in-order"
+                "pre-order"
+                "post-order"
+        node_func : func, optional
+            Function to apply to each node
+        """
+
+        # Handle case of empty tree
+        if self.root is None:
+            print('Tree is empty')
+            return
+
+        # Select apppropriate recursive traversal function
+        mapping = {
+            'in-order': self._recursive_in_order_traversal,
+            'pre-order': self._recursive_pre_order_traversal,
+            'post-order': self._recursive_post_order_traversal,
+        }
+        traverse_func = mapping[method]
+
+        # Recursively traverse tree using specified traversal function,
+        # starting at root node
+        traverse_func(self.root, node_func=self._display)
+
+
+if __name__ == '__main__':
+
+    b = BinarySearchTree()
+
+    b.traverse()
+
+    [b.insert(i) for i in [6, 3, 5, 7, 1, 8, 4, 9]]
+
+    print('Tree contains 7:', b.contains(7))
+    print('Tree contains 100:', b.contains(100))
+
+    print('\nIn-order traversal:')
+    b.traverse(method='in-order')
+
+    print('\nPre-order traversal:')
+    b.traverse(method='pre-order')
+
+    print('\nPost-order traversal:')
+    b.traverse(method='post-order')
