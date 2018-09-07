@@ -78,4 +78,57 @@ class BinarySearchTree():
             return
 
         # Recursively insert data, starting at root node
-        _recursive_insert(self, self.root, data)
+        _recursive_insert(self.root, data)
+
+    def _recursive_find(self, current_node, value):
+        """Try to find value at either left or right node, otherwise
+        recursively walking through branches of tree if value not found.
+
+        Parameters
+        ----------
+        value : any
+            Value to look for. Can be any Python object
+        """
+
+        # Go to left node
+        if value < current_node.data:
+            # If at end of tree, value has not been found, return False
+            if current_node.left_node is None:
+                return False
+            # If not at end of tree, recursively walk through branches
+            else:
+                return _recursive_find(current_node.left_node, value)
+
+        # Go to right node
+        elif value > current_node.data:
+            # If at end of tree, value has not been found, return False
+            if current_node.right_node is None:
+                return False
+            # If not at end of tree, recursively walk through branches
+            else:
+                return _recursive_find(current_node.right_node, value)
+
+        # Check current node for value
+        elif value == current_node.data:
+            return True
+
+    def contains(self, value):
+        """Check if tree contains specified value, giving boolean response.
+
+        Parameters
+        ----------
+        value : any
+            Value to try to find in tree
+        """
+
+        # Handle case of empty tree
+        if self.root is None:
+            print('Value not found since tree is empty')
+            return False
+
+        # Check root node for value
+        if self.root.data == value:
+            return True
+
+        # Recursively look for value, starting at root node
+        return _recursive_find(self.root, value)
