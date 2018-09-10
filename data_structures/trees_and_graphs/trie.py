@@ -359,7 +359,31 @@ class Trie():
                 )
 
         nodes = self._find_str_nodes(self, input_str)
-        _delete_nodes(nodes)
+        self._delete_nodes(nodes)
+
+    def _recursive_get_all_words(self, current_node, prefix, words):
+        """Recursively find words in Trie
+
+        Parameters
+        ----------
+        current_node : Node
+            Node to explore
+        prefix : str
+            Concatenation of node values in chain from root to current node
+        words : list of str
+            List to keep track of all words found so far in Trie
+        """
+        # Handle special case of no children from current_node; recursive
+        # stopping condition
+        if current_node.children.count(None) == len(self.alphabet):
+            return words
+
+        # Extract child nodes with data (i.e. != None)
+        populated_child_nodes = [
+            child_node for child_node in current_node.children if i is not None
+        ]
+        # Iterate through populated child nodes
+        for child_node in populated_child_nodes:
 
     def __str__(self):
         """Overload __str__ method to print all words within Trie
