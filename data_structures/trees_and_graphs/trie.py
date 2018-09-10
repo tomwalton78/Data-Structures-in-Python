@@ -98,7 +98,7 @@ class Trie():
 
             for char in input_str:
 
-                current_node = _insert_char(char, current_node)
+                current_node = self._insert_char(char, current_node)
 
             # Ensure node for last char in input_str is flagged as the end of a
             # word
@@ -134,11 +134,11 @@ class Trie():
             alphabet.
         """
         # Validate input
-        _validate_str_type(input_str)
-        _validate_str_len(input_str)
+        self._validate_str_type(input_str)
+        self._validate_str_len(input_str)
 
         # Perform insert
-        _insert_char_by_char(input_str)
+        self._insert_char_by_char(input_str)
 
     def _check_contains_char(self, char, current_node):
         """Check single char is in Trie, given that it should be a child of
@@ -188,7 +188,7 @@ class Trie():
 
         for char in search_str:
 
-            char_present, current_node = _check_contains_char(
+            char_present, current_node = self._check_contains_char(
                 char, current_node
             )
 
@@ -216,11 +216,11 @@ class Trie():
             True if search_str is in Trie, False otherwise
         """
         # Validate input
-        _validate_str_type(search_str)
-        _validate_str_len(search_str)
+        self._validate_str_type(search_str)
+        self._validate_str_len(search_str)
 
         # Perform check
-        return _check_contains_char_by_char(search_str)
+        return self._check_contains_char_by_char(search_str)
 
     def _check_prefix_char_by_char(self, prefix_str):
         """Check that prefix_str is in Trie, one character at a time.
@@ -244,7 +244,7 @@ class Trie():
 
         for char in prefix_str:
 
-            char_present, current_node = _check_contains_char(
+            char_present, current_node = self._check_contains_char(
                 char, current_node
             )
 
@@ -267,14 +267,75 @@ class Trie():
             True if prefix_str is a valid prefix, False otherwise
         """
         # Validate input
-        _validate_str_type(prefix_str)
-        _validate_str_len(prefix_str)
+        self._validate_str_type(prefix_str)
+        self._validate_str_len(prefix_str)
 
         # Perform check
-        return _check_prefix_char_by_char(prefix_str)
+        return self._check_prefix_char_by_char(prefix_str)
+
+    def _find_str_nodes(self, input_str):
+        """Find list of nodes that represent a string in the Trie, including
+        the root node.
+
+        Parameters
+        ----------
+        input_str : str
+            String to get nodes for
+
+        Returns
+        -------
+        nodes : list of Node
+            List of nodes that represent input_str in Trie
+        """
+        # Start at root node
+        current_node = self.root
+
+        # Find last node in del_str, storing nodes along the way
+        nodes = [current_node] + [None] * len(del_str)
+        for i, char in enumerate(del_str):
+            # Retrieve index
+            index = self.alphabet_mapping[char]
+
+            # Store appropriate child node
+            nodes[i] = current_node.children[index]
+
+        return nodes
+
+    def _delete_nodes(self, nodes):
+        """Given a list of nodes that represent a string in Trie, delete the
+        nodes that make up that string, leaving the rest of the Trie structure
+        intact.
+
+        Parameters
+        ----------
+        nodes : list of Node
+            List of nodes that represent string in Trie
+        """
+        # Set is_end_of_string flag of last node in word to False
+        nodes[-1].is_end_of_string = False
+
+        # Iterate through nodes that represent del_str, backwards (except
+        # last one)
+        reversed_nodes = nodes[::-1]
+        for i, node in enumerate(reversed_nodes[1:]):
+
+            # Check for no children in child node
+            child_node = reversed_nodes[i]
+            if child_node.children.count(None) == len(self.alphabet):
+                # Delete pointer to child node
+                char = child_node.value
+                node.children[char] = None
+
+            # Stop deleting nodes in chain when child node has children
+            else:
+                return
 
     def delete(self, del_str, check_contains=True):
         """Delete del_str from Trie
+
+        Works by going to last node in chain that represents del_str in Trie,
+        and then going through these nodes in reverse, deleting nodes until a
+        node has children (i.e. represents a branch along the del_str word).
 
         Parameters
         ----------
@@ -285,27 +346,20 @@ class Trie():
             attempting to delete it
         """
         # Validate input
-        _validate_str_type(del_str)
-        _validate_str_len(del_str)
+        self._validate_str_type(del_str)
+        self._validate_str_len(del_str)
 
         # Handle Trie not containing del_str
         if check_contains:
-            if not contains(del_str):
+            if not self.contains(del_str):
                 raise Exception(
                     "'{}' is not present within Trie; cannot delete it".format(
                         del_str
                     )
                 )
-        # Method:
-        # Go through chars of word until you find node with no children, or
-        # with is_end_of_string set to True (and word found matches del_str),
-        # whichever comes first
 
-        # Then, either set is_end_of_string flag to False if further child
-        # nodes below, or, if no child nodes, simply cut off that node (will
-        # create isolated chain of nodes further down that can't be accessed
-        # (no pointers to the group, so will be garbage collected at some
-        # point)
+        nodes = self._find_str_nodes(self, input_str)
+        _delete_nodes(nodes)
 
     def __str__(self):
         """Overload __str__ method to print all words within Trie
