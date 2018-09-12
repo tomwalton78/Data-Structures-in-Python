@@ -79,30 +79,30 @@ class Trie():
 
         # Initialise child node if not present
         if current_node.children[index] is None:
-            current_node.children[index] = char
+            current_node.children[index] = Node(char, alphabet=self.alphabet)
 
         # Return appropriate child node
         return current_node.children[index]
 
-        def _insert_char_by_char(self, input_str):
-            """Insert input_str one character at a time into Trie
+    def _insert_char_by_char(self, input_str):
+        """Insert input_str one character at a time into Trie
 
-            Parameters
-            ----------
-            input_str : str
-                String to insert into Trie. All characters must be in defined
-                alphabet.
-            """
-            # Start at root node
-            current_node = self.root
+        Parameters
+        ----------
+        input_str : str
+            String to insert into Trie. All characters must be in defined
+            alphabet.
+        """
+        # Start at root node
+        current_node = self.root
 
-            for char in input_str:
+        for char in input_str:
 
-                current_node = self._insert_char(char, current_node)
+            current_node = self._insert_char(char, current_node)
 
-            # Ensure node for last char in input_str is flagged as the end of a
-            # word
-            current_node.is_end_of_string = True
+        # Ensure node for last char in input_str is flagged as the end of a
+        # word
+        current_node.is_end_of_string = True
 
     def _validate_str_type(self, input_str):
         """Raise error if input_str is not of type: str
@@ -291,13 +291,17 @@ class Trie():
         current_node = self.root
 
         # Find last node in del_str, storing nodes along the way
-        nodes = [current_node] + [None] * len(del_str)
-        for i, char in enumerate(del_str):
+        nodes = [current_node] + [None] * len(input_str)
+        for i, char in enumerate(input_str):
+
             # Retrieve index
             index = self.alphabet_mapping[char]
 
             # Store appropriate child node
-            nodes[i] = current_node.children[index]
+            nodes[i+1] = current_node.children[index]
+
+            # Update current_node
+            current_node = current_node.children[index]
 
         return nodes
 
@@ -324,7 +328,8 @@ class Trie():
             if child_node.children.count(None) == len(self.alphabet):
                 # Delete pointer to child node
                 char = child_node.value
-                node.children[char] = None
+                index = self.alphabet_mapping[char]
+                node.children[index] = None
 
             # Stop deleting nodes in chain when child node has children
             else:
@@ -358,7 +363,7 @@ class Trie():
                     )
                 )
 
-        nodes = self._find_str_nodes(self, input_str)
+        nodes = self._find_str_nodes(del_str)
         self._delete_nodes(nodes)
 
     def _recursive_get_all_words(self, current_node, prefix, words):
@@ -380,10 +385,22 @@ class Trie():
 
         # Extract child nodes with data (i.e. != None)
         populated_child_nodes = [
-            child_node for child_node in current_node.children if i is not None
+            child_node for child_node in current_node.children
+            if child_node is not None
         ]
         # Iterate through populated child nodes
         for child_node in populated_child_nodes:
+            child_prefix = prefix + child_node.value
+
+            # Store full words
+            if child_node.is_end_of_string:
+                words.append(child_prefix)
+
+            words = self._recursive_get_all_words(
+                child_node, child_prefix, words
+            )
+
+        return words
 
     def __str__(self):
         """Overload __str__ method to print all words within Trie
@@ -393,3 +410,34 @@ class Trie():
         str
             Comma separated string of all words in Trie
         """
+        # Retrieve all words in Trie
+        words = self._recursive_get_all_words(self.root, '', [])
+
+        if len(words) == 0:
+            return 'Trie is empty'
+
+        return ', '.join(words)
+
+
+if __name__ == '__main__':
+
+    T = Trie()
+
+    print(T)
+
+    [T.insert(word) for word in [
+        'ant', 'apple', 'boat', 'bot', 'boa', 'boating'
+    ]]
+
+    print(T)
+
+    print('Trie contains "boat":', T.contains("boat"))
+    print('Trie contains "sky":', T.contains("sky"))
+
+    print('"bo" prefix is in Trie:', T.is_prefix("bo"))
+    print('"to" prefix is in Trie:', T.is_prefix("to"))
+
+    print('Deleting "ant" from Trie...')
+    T.delete('ant')
+
+    print(T)
