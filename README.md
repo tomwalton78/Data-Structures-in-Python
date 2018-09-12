@@ -1,5 +1,5 @@
 # Data-Structures-in-Python
-Contains implementations of various data structures, written in Python 3,with the aim of gaining experience of working with and understanding these data strutures.
+Contains implementations of various data structures, written in Python 3, with the aim of gaining experience of working with and understanding these data strutures.
 
 ## Getting Started
 
