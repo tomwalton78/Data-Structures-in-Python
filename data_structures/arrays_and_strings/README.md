@@ -11,3 +11,11 @@ Class to store strings as lists of strings, with append, extend and + (operator 
 ## Array List
 
 Class to represent a dynamically resizable array, with default resizing factor of 2. Functionality inspired by Cracking the Coding Interview book.
+
+## Array Sorting
+
+Contains sorting algorithms designed to work on Python's list data type.
+
+## Array Searching
+
+Contains searching algorithms designed to work on Python's list data type.
