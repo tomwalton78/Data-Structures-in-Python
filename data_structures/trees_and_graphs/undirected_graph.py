@@ -1,3 +1,8 @@
+import copy
+
+from data_structures.stacks_and_queues.queue import Queue
+
+
 class Node():
     """Represents a single node/point within a graph
     """
@@ -106,6 +111,11 @@ class Graph():
     def __str__(self):
         """Overload __str__ method to return all nodes in graph, their values
         and their neighbours.
+
+        Returns
+        -------
+        str
+            String containing all nodes in graph, and details about them
         """
         # Extract and store info about each node as a string
         pretty_node_list = []
@@ -116,6 +126,128 @@ class Graph():
             pretty_node_list.append(node_str)
 
         return '\n'.join(pretty_node_list)
+
+    def _has_path_dfs(self, visited, current_node_id, target_id):
+        """Recursively search Graph looking for target_id, starting at a given
+        node, using depth first search.
+
+        Parameters
+        ----------
+        visited : dict
+            Contains mapping from ids to bool indicating if they have been
+            visited (True) or not (False). Format:
+                id : Node
+        current_node_id : str
+            Id of current node  being examined
+        target_id : str
+            Id of target node that is being searched for
+
+        Returns
+        -------
+        bool
+            True if target_id found, False otherwise
+        """
+
+        # Retrieve current node
+        current_node = self.nodes[current_node_id]
+
+        # Check that current_node has not been visited before
+        if visited[current_node.id]:
+            return False
+
+        # Check to see if current_node id matches the target node id
+        if current_node.id == target_id:
+            return True
+
+        # Mark current_node as visited
+        visited[current_node.id] = True
+
+        # Check all neighbour nodes
+        for neighbour_id in current_node.neighbour_ids:
+            if self._has_path_dfs(visited, neighbour_id, target_id):
+                return True
+
+        # If no match found after search completes, return False
+        return False
+
+    def _has_path_bfs(self, visited, start_id, target_id):
+        """Search Graph looking for node with target_id, starting at a given
+        node (id_1), using breadth first search.
+
+        Parameters
+        ----------
+        visited : dict
+            Contains mapping from ids to bool indicating if they have been
+            visited (True) or not (False). Format:
+                id : Node
+        start_id : str
+            Id of node where search starts
+        target_id : str
+            Id of target node that is being searched for
+
+        Returns
+        -------
+        bool
+            True if target_id found, False otherwise
+        """
+        # Use Queue to store ids of nodes to be visited next
+        nodes_to_visit = Queue()
+
+        # Mark starting node as visited and add to Queue
+        visited[start_id] = True
+        nodes_to_visit.add(start_id)
+
+        # Keep visiting nodes until none left to visit (Queue empty)
+        while not nodes_to_visit.is_empty():
+
+            # Extract node at front of Queue
+            current_node_id = nodes_to_visit.remove()
+            current_node = self.nodes[current_node_id]
+
+            # Check to see if current node id matches target_id
+            if current_node_id == target_id:
+                return True
+
+            # Check through current_node's neighbours
+            for node_id in current_node.neighbour_ids:
+
+                # Ensure node not already visited
+                if not visited[node_id]:
+
+                    # Mark node as visited and add to Queue
+                    visited[node_id] = True
+                    nodes_to_visit.add(node_id)
+
+        # If no match found after search completes, return False
+        return False
+
+    def is_connected(self, id_1, id_2, method='BFS'):
+        """Check whether there is a connection between 2 nodes, using specified
+        search method.
+
+        Parameters
+        ----------
+        id_1 : str
+            Identifier for node 1
+        id_2 : str
+            Identifier for node 2
+        method : str, optional
+            Method to use for searching the graph. Possible values:
+            "BFS" -> breadth first search
+            "DFS" -> depth first search
+        """
+
+        # Generate dictionary to track which nodes have been visited
+        visited = {k: False for k in self.nodes.keys()}
+
+        if method == 'DFS':
+            return self._has_path_dfs(visited, id_1, id_2)
+        elif method == 'BFS':
+            return self._has_path_bfs(visited, id_1, id_2)
+        else:
+            raise Exception(
+                'Invalid value for method parameter: {}'.format(str(method))
+            )
 
 
 if __name__ == '__main__':
@@ -145,3 +277,22 @@ if __name__ == '__main__':
     G.delete('B')
 
     print(G, '\n')
+
+    print(
+        'Using depth first search. Is "A" connected to "C"?',
+        G.is_connected('A', 'C', method='DFS')
+    )
+    G.insert('X', 24)
+    print(
+        'Using depth first search. Is "A" connected to "X"?',
+        G.is_connected('A', 'X', method='DFS')
+    )
+
+    print(
+        'Using breadth first search. Is "A" connected to "C"?',
+        G.is_connected('A', 'C', method='BFS')
+    )
+    print(
+        'Using breadth first search. Is "A" connected to "X"?',
+        G.is_connected('A', 'X', method='BFS')
+    )
