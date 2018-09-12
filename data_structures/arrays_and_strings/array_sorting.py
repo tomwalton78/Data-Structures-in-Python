@@ -80,6 +80,42 @@ def selection_sort(array, ascending=True):
         # Reverse array for descending order sort
         return array[::-1]
 
+def merge_sort(array, ascending=True):
+    """Sort array using merge sort algorithm.
+
+    Parameters
+    ----------
+    array : list
+        List to be sorted; Can contain any Python objects that can be compared
+    ascending : bool, optional
+        If True sort array from smallest to largest; False -> sort array from
+        largest to smallest
+
+    Returns
+    -------
+    list
+        Input array sorted.
+    """
+
+    # Initialise helper array, used to store elements of two arrays being
+    # merged, while they are being inserted (in order) into main array
+    helper_arr = [None] * len(array)
+
+    # Perform merge sort recursively
+    return recursive_merge_sort(array, helper_arr, 0, len(array) - 1)
+
+    def recursive_merge_sort(array, helper_arr, low, high):
+        """
+        """
+        pass
+        # need to return array
+
+    def merge(array, helper_arr, low, mid, high):
+        pass
+        # need to return array
+
+
+
 
 if __name__ == '__main__':
 
@@ -103,3 +139,5 @@ if __name__ == '__main__':
         'arr sorted using selection sort (descending order):',
         selection_sort(arr, ascending=False)
     )
+
+    # For merge sert, time it with different lists to check O(n) time is correct
