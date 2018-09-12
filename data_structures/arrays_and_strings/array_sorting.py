@@ -80,6 +80,7 @@ def selection_sort(array, ascending=True):
         # Reverse array for descending order sort
         return array[::-1]
 
+
 def merge_sort(array, ascending=True):
     """Sort array using merge sort algorithm.
 
@@ -105,7 +106,19 @@ def merge_sort(array, ascending=True):
     return recursive_merge_sort(array, helper_arr, 0, len(array) - 1)
 
     def recursive_merge_sort(array, helper_arr, low, high):
-        """
+        """Recursively merge sort array, with sub-array to sort specified by
+        starting (low) and ending (high) indices.
+
+        Parameters
+        ----------
+        array : list
+            Sub-array to sort. Can be any comparable Python data type.
+        helper_arr : list
+            Array used to store values while merging
+        low : int
+            Index in array where sub-array starts
+        high : int
+            Index in array where sub-array ends
         """
         pass
         # need to return array
