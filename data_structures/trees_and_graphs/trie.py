@@ -11,7 +11,7 @@ class Node():
     """
 
     def __init__(self, value, alphabet=ENGLISH_ALPHABET):
-        """Initialse Node object with its value, and set up pointers to its
+        """Initialise Node object with its value, and set up pointers to its
         child nodes.
 
         Parameters
@@ -44,7 +44,7 @@ class Trie():
         return dict((k, v) for v, k in enumerate(self.alphabet))
 
     def __init__(self, alphabet=ENGLISH_ALPHABET):
-        """Initialse Trie by defining root Node and storing mapping from chars
+        """Initialise Trie by defining root Node and storing mapping from chars
         in alphabet to corresponding index.
 
         Parameters
