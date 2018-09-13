@@ -212,11 +212,129 @@ def merge_sort(array, ascending=True):
         return array[::-1]
 
 
+def quick_sort(array, ascending=True):
+    """Sort array using quick sort algorithm.
+
+    Parameters
+    ----------
+    array : list
+        List to be sorted; Can contain any Python objects that can be compared
+    ascending : bool, optional
+        If True sort array from smallest to largest; False -> sort array from
+        largest to smallest
+
+    Returns
+    -------
+    list
+        Input array sorted.
+    """
+
+    def recursive_quick_sort(array, left_index, right_index):
+        """Recursively quick sort array, with sub-array to sort specified by
+        starting (left) and ending (right) indices.
+
+        Parameters
+        ----------
+        array : list
+            Array to sort. Can be any comparable Python data type.
+        left_index : int
+            Index in array where sub-array starts
+        right_index : int
+            Index in array where sub-array ends
+
+        Returns
+        -------
+        array : list
+            Input (sub-) array sorted
+        """
+
+        # Partition sub-array
+        array, index = partition(array, left_index, right_index)
+
+        # Recursively quick sort left half of sub-array (to left of partition
+        # element), provided that left_index pointer moves forward by at least
+        # 2 places in partition function (i.e. needs sorting, more than 2
+        # elements)
+        # Stopping case for recursion
+        if left_index < index - 1:
+            array = recursive_quick_sort(array, left_index, index - 1)
+
+        # Similar for right half
+        # Stopping case for recursion
+        if index < right_index:
+            array = recursive_quick_sort(array, index, right_index)
+
+        return array
+
+    def partition(array, left_index, right_index):
+        """Partition sub-array down middle, ensuring that all elements to left
+        of partition element are smaller than it, and all elements to right
+        are larger. Sub-array defined between left_index and right_index
+        pointers.
+
+        Parameters
+        ----------
+        array : list
+            Array to sort. Can be any comparable Python data type.
+        left_index : int
+            Index in array where sub-array starts
+        right_index : int
+            Index in array where sub-array ends
+
+        Returns
+        -------
+        array : list
+            Input (sub-) array partitioned
+        left_index : int
+            Result value of left_index after performing partitioning
+        """
+        # Choose pivot point (halfway through sub-array)
+        pivot_index = int((left_index + right_index) / 2.0)
+        pivot_val = array[pivot_index]
+
+        # Keep going through sub-array until left_index and right_index
+        # pointers reach each other
+        while left_index <= right_index:
+
+            # Find leftmost element on the left of the partition that should be
+            # on right side
+            while array[left_index] < pivot_val:
+                left_index += 1
+
+            # Find rightmost element on the right of the partition that should
+            # be on left side
+            while array[right_index] > pivot_val:
+                right_index -= 1
+
+            # Swap elements on left and right sides that are out of place
+            if left_index <= right_index:
+                # Perform swap
+                temp = array[right_index]
+                array[right_index] = array[left_index]
+                array[left_index] = temp
+
+                # Iterate left_index and right_index pointers
+                left_index += 1
+                right_index -= 1
+
+        return array, left_index
+
+    # Perform quick sort recursively
+    array = recursive_quick_sort(array, 0, len(array) - 1)
+
+    if ascending:
+        return array
+    else:
+        # Reverse array for descending order sort
+        return array[::-1]
+
+
 if __name__ == '__main__':
 
     arr = [7, 1, 5, 9, 0, 10, 10, 1]
     print('arr:', arr)
 
+    # Bubble sort
     print(
         'arr sorted using bubble sort (ascending order):',
         bubble_sort(arr)
@@ -226,6 +344,7 @@ if __name__ == '__main__':
         bubble_sort(arr, ascending=False)
     )
 
+    # Selection sort
     print(
         'arr sorted using selection sort (ascending order):',
         selection_sort(arr)
@@ -235,6 +354,7 @@ if __name__ == '__main__':
         selection_sort(arr, ascending=False)
     )
 
+    # Merge sort
     print(
         'arr sorted using merge sort (ascending order):',
         merge_sort(arr)
@@ -242,4 +362,14 @@ if __name__ == '__main__':
     print(
         'arr sorted using merge sort (descending order):',
         merge_sort(arr, ascending=False)
+    )
+
+    # Quick sort
+    print(
+        'arr sorted using quick sort (ascending order):',
+        quick_sort(arr)
+    )
+    print(
+        'arr sorted using quick sort (descending order):',
+        quick_sort(arr, ascending=False)
     )
