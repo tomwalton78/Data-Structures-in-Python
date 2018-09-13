@@ -20,6 +20,8 @@ Counting sort implementation based off of this [page](https://en.wikipedia.org/w
 
 Radix sort implementation based off of this [page](https://en.wikipedia.org/wiki/Radix_sort).
 
+Remaining sorting algorithm implementations based off descriptions and code within Cracking the Coding Interview, 6th Edition book, by Gayle Laakmann McDowell.
+
 ## Array Searching
 
 Contains searching algorithms designed to work on Python's list data type.
