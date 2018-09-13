@@ -348,7 +348,7 @@ def counting_sort(array, k, key_func=lambda x: x, ascending=True):
 
     Returns
     -------
-    list
+    output_arr : list
         Input array sorted.
     """
     # Generate array to contain counts of each distinct value in array
@@ -366,23 +366,84 @@ def counting_sort(array, k, key_func=lambda x: x, ascending=True):
         counts[i] = total
         total += old_count
 
-    # Transfer to output array (in reality just modifying array, to save space)
-    for i, item in enumerate(array):
+    # Transfer to output array
+    output_arr = [None] * len(array)
+    for item in array:
         # Store item in correct position in array
-        array[counts[key_func(item)]] = item
+        output_arr[counts[key_func(item)]] = item
         # Increment index for relevant k value
         counts[key_func(item)] += 1
 
     if ascending:
-        return array
+        return output_arr
     else:
         # Reverse array for descending order sort
-        return array[::-1]
+        return output_arr[::-1]
+
+
+def radix_sort(array, base=10, ascending=True, validate_dtype=False):
+        """Sort array of integers using radix sort algorithm.
+
+        Parameters
+        ----------
+        array : list of int
+            List to be sorted
+        base : int, optional
+            Base to use for radix sort (higher base -> lower time complexity,
+            higher space complexity)
+        ascending : bool, optional
+            If True sort array from smallest to largest; False -> sort array
+            from largest to smallest
+
+        Returns
+        -------
+        array : list
+            Input array sorted.
+        """
+
+        def ensure_arr_of_ints(array):
+            """Raise error if any elements in array aren't of int data type.
+
+            Parameters
+            array : list
+                Array to check
+            """
+            for item in array:
+                if type(item) != int:
+                    raise Exception(
+                        """radix_sort only supports int data type within array.
+                         {} data is not supported""".format(
+                            str(type(item))
+                        ).replace('  ', '')
+                    )
+
+        if validate_dtype:
+            ensure_arr_of_ints(array)
+
+        iteration_count = 0
+        max_val = max(array)
+        # Keep iterating until all digits have been used in the sort
+        while max_val >= base**iteration_count:
+
+            # Define function to extract correct digit from element in array
+            def key_func(x): return int((x / base**iteration_count) % base)
+
+            # Sort array using counting sort, where keys are iteration_count
+            # digits from least significant digit of number
+            array = counting_sort(array, base, key_func=key_func)
+
+            iteration_count += 1
+
+        if ascending:
+            return array
+        else:
+            # Reverse array for descending order sort
+            return array[::-1]
 
 
 if __name__ == '__main__':
 
-    arr = [7, 1, 5, 9, 0, 10, 10, 1]
+    arr = [7, 1, 5, 0, 10, 10, 1, 100, 115, 56]
     print('arr:', arr)
 
     # Bubble sort
@@ -428,9 +489,19 @@ if __name__ == '__main__':
     # Counting sort
     print(
         'arr sorted using counting sort (ascending order):',
-        counting_sort(arr, 11)
+        counting_sort(arr, max(arr) + 1)
     )
     print(
         'arr sorted using counting sort (descending order):',
-        counting_sort(arr, 11, ascending=False)
+        counting_sort(arr, max(arr) + 1, ascending=False)
+    )
+
+    # Radix sort
+    print(
+        'arr sorted using radix sort (ascending order):',
+        radix_sort(arr)
+    )
+    print(
+        'arr sorted using radix sort (descending order):',
+        radix_sort(arr, ascending=False)
     )

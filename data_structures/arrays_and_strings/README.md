@@ -18,6 +18,8 @@ Contains sorting algorithms designed to work on Python's list data type.
 
 Counting sort implementation based off of this [page](https://en.wikipedia.org/wiki/Counting_sort#The_algorithm).
 
+Radix sort implementation based off of this [page](https://en.wikipedia.org/wiki/Radix_sort).
+
 ## Array Searching
 
 Contains searching algorithms designed to work on Python's list data type.
