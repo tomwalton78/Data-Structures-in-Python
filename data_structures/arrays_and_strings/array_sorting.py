@@ -329,6 +329,57 @@ def quick_sort(array, ascending=True):
         return array[::-1]
 
 
+def counting_sort(array, k, key_func=lambda x: x, ascending=True):
+    """Sort array using counting sort algorithm.
+
+    Parameters
+    ----------
+    array : list
+        List to be sorted; Must produce integer values in the range 0 to k-1
+        when key_func is applied to its elements
+    k : int
+        Max value of key_func(i), -1, where i an element of array
+    key_func : func, optional
+        Function to apply to elements of array to produce an integer in range 0
+        to k-1
+    ascending : bool, optional
+        If True sort array from smallest to largest; False -> sort array from
+        largest to smallest
+
+    Returns
+    -------
+    list
+        Input array sorted.
+    """
+    # Generate array to contain counts of each distinct value in array
+    counts = [0] * k
+
+    # Populate counts array by running through array
+    for item in array:
+        counts[key_func(item)] += 1
+
+    # Calculate starting index for each k value, putting them in counts
+    # Effectively storing number of items with key_func(item) less than i
+    total = 0
+    for i in range(k):
+        old_count = counts[i]
+        counts[i] = total
+        total += old_count
+
+    # Transfer to output array (in reality just modifying array, to save space)
+    for i, item in enumerate(array):
+        # Store item in correct position in array
+        array[counts[key_func(item)]] = item
+        # Increment index for relevant k value
+        counts[key_func(item)] += 1
+
+    if ascending:
+        return array
+    else:
+        # Reverse array for descending order sort
+        return array[::-1]
+
+
 if __name__ == '__main__':
 
     arr = [7, 1, 5, 9, 0, 10, 10, 1]
@@ -372,4 +423,14 @@ if __name__ == '__main__':
     print(
         'arr sorted using quick sort (descending order):',
         quick_sort(arr, ascending=False)
+    )
+
+    # Counting sort
+    print(
+        'arr sorted using counting sort (ascending order):',
+        counting_sort(arr, 11)
+    )
+    print(
+        'arr sorted using counting sort (descending order):',
+        counting_sort(arr, 11, ascending=False)
     )

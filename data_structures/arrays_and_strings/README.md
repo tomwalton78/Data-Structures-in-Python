@@ -16,6 +16,8 @@ Class to represent a dynamically resizable array, with default resizing factor o
 
 Contains sorting algorithms designed to work on Python's list data type.
 
+Counting sort implementation based off of this [page](https://en.wikipedia.org/wiki/Counting_sort#The_algorithm).
+
 ## Array Searching
 
 Contains searching algorithms designed to work on Python's list data type.
