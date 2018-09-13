@@ -129,7 +129,6 @@ def merge_sort(array, ascending=True):
             array = recursive_merge_sort(array, helper_arr, low, mid)
             # Recursively merge sort right half of split sub-array
             array = recursive_merge_sort(array, helper_arr, mid + 1, high)
-            #CHECK TO FIND WAY TO NOT NEED +1
             # Merge two split sub-arrays
             array = merge(array, helper_arr, low, mid, high)
 
@@ -213,8 +212,6 @@ def merge_sort(array, ascending=True):
         return array[::-1]
 
 
-
-
 if __name__ == '__main__':
 
     arr = [7, 1, 5, 9, 0, 10, 10, 1]
@@ -246,5 +243,3 @@ if __name__ == '__main__':
         'arr sorted using merge sort (descending order):',
         merge_sort(arr, ascending=False)
     )
-
-    # For merge sert, time it with different lists to check O(n) time is correct
