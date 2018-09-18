@@ -14,6 +14,9 @@ def bubble_sort(array, ascending=True):
     list
         Input array sorted.
     """
+    # Create copy to avoid modifying array inplace
+    array = array.copy()
+
     # Use swap_count to keep track of number of swaps on each sweep
     swap_count = 1
 
@@ -58,6 +61,9 @@ def selection_sort(array, ascending=True):
     list
         Input array sorted.
     """
+    # Create copy to avoid modifying array inplace
+    array = array.copy()
+
     # Iterate through all but last element in array
     for i, j in enumerate(array.copy()[:-1]):
 
@@ -198,6 +204,9 @@ def merge_sort(array, ascending=True):
 
         return array
 
+    # Create copy to avoid modifying array inplace
+    array = array.copy()
+
     # Initialise helper array, used to store elements of two arrays being
     # merged, while they are being inserted (in order) into main array
     helper_arr = [None] * len(array)
@@ -319,6 +328,9 @@ def quick_sort(array, ascending=True):
 
         return array, left_index
 
+    # Create copy to avoid modifying array inplace
+    array = array.copy()
+
     # Perform quick sort recursively
     array = recursive_quick_sort(array, 0, len(array) - 1)
 
@@ -351,6 +363,9 @@ def counting_sort(array, k, key_func=lambda x: x, ascending=True):
     output_arr : list
         Input array sorted.
     """
+    # Create copy to avoid modifying array inplace
+    array = array.copy()
+
     # Generate array to contain counts of each distinct value in array
     counts = [0] * k
 
@@ -416,6 +431,9 @@ def radix_sort(array, base=10, ascending=True, validate_dtype=False):
                             str(type(item))
                         ).replace('  ', '')
                     )
+
+        # Create copy to avoid modifying array inplace
+        array = array.copy()
 
         if validate_dtype:
             ensure_arr_of_ints(array)
