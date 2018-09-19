@@ -136,6 +136,7 @@ def merge_sort(array, ascending=True):
             # Recursively merge sort right half of split sub-array
             array = recursive_merge_sort(array, helper_arr, mid + 1, high)
             # Merge two split sub-arrays
+
             array = merge(array, helper_arr, low, mid, high)
 
         return array
@@ -164,7 +165,7 @@ def merge_sort(array, ascending=True):
             Input (sub-) array merged (in order)
         """
         # Fill helper_arr with both sub-arrays
-        helper_arr[low: high + 1] = array[low: high + 1]
+        helper_arr[low: high + 1] = array[low: high + 1].copy()
 
         # Set indexes of start of each sub-array in helper_arr, using these as
         # pointers to positions within the left and right sub-arrays
@@ -181,7 +182,7 @@ def merge_sort(array, ascending=True):
             # helper_right pointers, placing smaller of two in the array. Bear
             # in mind that both sub-arrays
             # are sorted.
-            if helper_arr[helper_left <= helper_arr[helper_right]]:
+            if helper_arr[helper_left] <= helper_arr[helper_right]:
                 # i.e. element in left sub-array is smaller
                 array[current] = helper_arr[helper_left]
                 helper_left += 1
@@ -199,7 +200,7 @@ def merge_sort(array, ascending=True):
         # sub-arrays will have 'un-copied' elements, not both.
         remaining = mid - helper_left
         array[current: current + remaining + 1] = (
-            helper_arr[helper_left: remaining + 1]
+            helper_arr[helper_left: helper_left + remaining + 1].copy()
         )
 
         return array
