@@ -17,10 +17,35 @@ class Node():
 
 class LinkedList():
 
-    def __init__(self):
-        """Initialise LinkedList containing no data
+    def __init__(self, input_arr=[]):
+        """Initialise LinkedList containing no data. Option to initialise with
+        data, from an array.
+
+        Parameters
+        ----------
+        input_arr : list, optional
+            Data to populate linked list with; data is appended from start to
+            end of input_arr
         """
         self.head = None
+
+        # Fill LinkedList with data, if given
+        self._fill_from_array(input_arr)
+
+    def _fill_from_array(self, input_arr):
+        """Fill linked list with data in input_arr
+
+        Put item at first index of arr at head, then append, walking through
+        input_arr
+
+        Parameters
+        ----------
+        input_arr : list
+            list to insert
+        """
+        # Iterate through array backwards, so can use faster prepend method
+        for item in input_arr[::-1]:
+            self.prepend(item)
 
     def append(self, data):
         """Append an element to the end of the linked list
@@ -30,7 +55,6 @@ class LinkedList():
         data
             Data to store in LinkedList. Can be any python object.
         """
-
         # If head is None (i.e. empty linked list), put the data there (as
         # first element)
         if self.head is None:
@@ -56,7 +80,6 @@ class LinkedList():
         data
             Data to store in LinkedList. Can be any python object.
         """
-
         # Create new Node to represent to contain this data, with a reference
         # to the current head of the linked list
         new_head = Node(data, next_node=self.head)
@@ -72,7 +95,6 @@ class LinkedList():
         data
             Value to delete in LinkedList. Can be any python object.
         """
-
         # Handle special case of empty linked list
         if self.head is None:
             return
@@ -105,7 +127,6 @@ class LinkedList():
         str
             Heading line, then comma separated list of LinkedList contents
         """
-
         # List to store LinkedList contents
         contents = []
 
