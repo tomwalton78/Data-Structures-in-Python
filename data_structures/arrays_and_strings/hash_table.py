@@ -1,4 +1,4 @@
-from data_structures.linked_list.singly_linked_list import LinkedList
+from data_structures.linked_lists.singly_linked_list import LinkedList
 
 
 class HashEntry():
@@ -172,7 +172,7 @@ class HashTable():
             linked lists:""".replace('  ', ''))
 
         for linked_list in self.main_array:
-            linked_list.print_all()
+            print(linked_list)
             print('')
 
 
