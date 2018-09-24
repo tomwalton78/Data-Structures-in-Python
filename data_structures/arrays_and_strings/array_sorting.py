@@ -19,6 +19,8 @@ def bubble_sort(array, ascending=True):
 
     # Use swap_count to keep track of number of swaps on each sweep
     swap_count = 1
+    # Keep track of number of times array has been iterated over
+    sweep_count = 0
 
     # Keep sweeping through array until no swaps need to occur
     while swap_count > 0:
@@ -26,7 +28,8 @@ def bubble_sort(array, ascending=True):
         # Reset swap scount at beginning of sweep
         swap_count = 0
 
-        for i, j in enumerate(array.copy()[:-1]):
+        # for i, j in enumerate(array.copy()[:-1]):
+        for i in range(len(array) - sweep_count - 1):
 
             # Swap pair of elements being compared if out of order
             if array[i] > array[i+1]:
@@ -37,6 +40,10 @@ def bubble_sort(array, ascending=True):
 
                 # Increment swap count
                 swap_count += 1
+
+        # Increment sweep_count, to avoid checking elements that are already in
+        # correct order, at end of array
+        sweep_count += 1
 
     if ascending:
         return array
