@@ -28,7 +28,6 @@ def bubble_sort(array, ascending=True):
         # Reset swap scount at beginning of sweep
         swap_count = 0
 
-        # for i, j in enumerate(array.copy()[:-1]):
         for i in range(len(array) - sweep_count - 1):
 
             # Swap pair of elements being compared if out of order
