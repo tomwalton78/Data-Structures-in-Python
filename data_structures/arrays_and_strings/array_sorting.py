@@ -71,12 +71,17 @@ def selection_sort(array, ascending=True):
     array = array.copy()
 
     # Iterate through all but last element in array
-    for i, j in enumerate(array.copy()[:-1]):
+    for i in range(len(array)-1):
 
         # Find index of min value element out of array, starting after current
         # element
-        min_val = min(array[i+1:])
-        min_index = array[i+1:].index(min_val)
+        # Initialise min val to last element in (sub-)array
+        min_val = array[i+1:][-1]
+        min_index = len(array[i+1:]) - 1
+        for index, val in enumerate(array[i+1:]):
+            if val < min_val:
+                min_val = val
+                min_index = index
         # Convert to index in array (not sliced)
         min_index = i + 1 + min_index
 
