@@ -15,3 +15,7 @@ Initial implementation based off of this [article](https://medium.com/basecs/try
 ## (Undirected) Graph
 
 Initial implementation based off of this [tutorial](https://www.youtube.com/watch?v=zaBhtODEL0w).
+
+## Directed Graph
+
+Initial implementation based off of this [tutorial](https://www.youtube.com/watch?v=zaBhtODEL0w).

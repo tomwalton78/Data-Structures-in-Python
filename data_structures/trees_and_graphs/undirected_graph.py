@@ -1,5 +1,3 @@
-import copy
-
 from data_structures.stacks_and_queues.queue import Queue
 
 
@@ -43,7 +41,7 @@ class Graph():
         id : str
             Identifier to check
         """
-        if id in self.nodes.keys():
+        if id in self.nodes:
             raise Exception("Id already stored in graph")
 
     def insert(self, id, value):
