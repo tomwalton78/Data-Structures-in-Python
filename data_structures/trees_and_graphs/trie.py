@@ -123,6 +123,8 @@ class Trie():
         input_str : str
             String to check
         """
+        if len(input_str) == 0:
+            raise Exception("Invalid input, string is empty")
 
     def insert(self, input_str):
         """Insert a string into the Trie.
